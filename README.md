@@ -10,6 +10,7 @@ Multi-reader, Multi-test Analysis Tool
 下面对这几个功能对应的函数给出详细说明。
 
 • mtmr_test(): 完成假设检验的函数, 输入参数为
+
 x_rate: 恶性病人的得分矩阵(必须给出)
 y_rate: 良性病人的得分矩阵(必须给出)
 level: 置信度, 默认值为0.95
