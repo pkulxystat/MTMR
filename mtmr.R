@@ -396,17 +396,17 @@ qqnorm(diff_record) ##test normality
 make_decision <- function(x_rate, y_rate){
   w_1 <- rep(1/m, m)
   w_2 <- matrix(rep(1/r, r), ncol=1)
-  ratio <- rep(0,4) 
-  ratio[1] <- sqrt(var(c(w_1 %*% x_rate[,1:r])))/sqrt(var(c(x_rate[,1:r] %*% w_2)))
-  ratio[2] <- sqrt(var(c(w_1 %*% x_rate[,(r+1):(2*r)])))/sqrt(var(c(x_rate[,(r+1):(2*r)] %*% w_2)))
-
+  a11 <- var(c(w_1 %*% x_rate[,1:r]))
+  a12 <- var(c(x_rate[,1:r] %*% w_2))
+  b11 <- var(c(w_1 %*% x_rate[,(r+1):(2*r)]))
+  b12 <- var(c(x_rate[,(r+1):(2*r)] %*% w_2))
   w_1 <- rep(1/n, n)
   w_2 <- matrix(rep(1/r, r), ncol=1)
-  ratio[3] <- sqrt(var(c(w_1 %*% y_rate[,1:r])))/sqrt(var(c(y_rate[,1:r] %*% w_2)))
-  ratio[4] <- sqrt(var(c(w_1 %*% y_rate[,(r+1):(2*r)])))/sqrt(var(c(y_rate[,(r+1):(2*r)] %*% w_2)))
-  
-  if (ratio[1] + ratio[3] > 0.6  | ratio[2] + ratio[4] > 0.6){return('bootstrap')}
+  a21 <- var(c(w_1 %*% y_rate[,1:r]))
+  a22 <- var(c(y_rate[,1:r] %*% w_2))
+  b21 <- var(c(w_1 %*% y_rate[,(r+1):(2*r)]))
+  b22 <- var(c(y_rate[,(r+1):(2*r)] %*% w_2))
+  if ((a11+a21)/(a12+a22) > 0.1  | (b11+b21)/(b12+b22) > 0.1){return('bootstrap')}
   else{return('simple')}
 }
-
 
