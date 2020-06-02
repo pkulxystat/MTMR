@@ -274,7 +274,7 @@ mtmr_samplesize <- function(r, AUC, delta, power, rho_exp, equal_p=0, ratio='bes
     C_2 <- rho_exp[5] + (r-1) * rho_exp[6] - rho_exp[7] - (r-1) * rho_exp[8]
     tmp1 <- r * var_tolerance/8/V
     tmp2 <- -(C_1 + C_2)/2
-    tmp3 <- (V-V**2)*(C_1-C_2)^2/2/r/var_tolerance - C_0
+    tmp3 <- V*(C_1-C_2)^2/2/r/var_tolerance - C_0
     tmp <- sqrt(tmp2^2 - 4*tmp1*tmp3)
     N <- (-tmp2+tmp)/2/tmp1
     ratio <- 1/2 + V*(C_1-C_2)/N/r/var_tolerance
