@@ -249,7 +249,7 @@ mtmr_test <- function(x_rate, y_rate, level=0.95, times = 20000, h=2, fixed_read
     bootstrap_result <- bootstrap(x_rate, y_rate, times, r)
     sd_1 <- bootstrap_result[1]
     sd_2 <- bootstrap_result[2]
-    sd_auc <- bootstrap_result[3]
+    sd_diff <- bootstrap_result[3]
     interval_1 <- c(theta_hat_h[1]+z_norm*sd_1, theta_hat_h[1]-z_norm*sd_1)
     interval_2 <- c(theta_hat_h[2]+z_norm*sd_2, theta_hat_h[2]-z_norm*sd_2)
     interval_diff <- c(theta_hat_h[1]-theta_hat_h[2]+z_norm*sd_diff, theta_hat_h[1]-theta_hat_h[2]-z_norm*sd_diff)
