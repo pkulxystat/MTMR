@@ -1,4 +1,4 @@
-source('D:/tmp/mtmr_app.R', encoding = 'UTF-8')
+source('D:/tmp/mtmr_app.R', encoding = 'UTF-8')   #请将路径替换为mtmr_app.R保存在本地的路径
 
 get_score <- function(scores, low, high){
   tmp <- exp(sum(log((high - scores)/(high-low))))
@@ -6,12 +6,12 @@ get_score <- function(scores, low, high){
   return(score)
 }
 
-raw_data <- read.csv('D:/tmp/cancer_data.csv', header=TRUE)
+raw_data <- read.csv('D:/tmp/cancer_data.csv', header=TRUE)  #请将路径替换为cancer_data.csv保存在本地的路径
 raw_data <- as.matrix(raw_data)
 r <- 6   #six readers
-partition <- 10  #10���������
-low <- 0; high <- 100  #��ַ�Χ
-h <- 2   #Ӱ�񷽷�����
+partition <- 10  #10个检测区域
+low <- 0; high <- 100  #打分范围
+h <- 2   #影像方法数量
 N <- nrow(raw_data)/r
 m <- 0
 
@@ -49,16 +49,18 @@ for (index in 1:nrow(raw_data)){
 }
 
 #here is the part of analysis tool
-fix_result <- mtmr_test(x_rate, y_rate, level=0.95, times = 20000, h=2, fixed_reader=TRUE)
-not_fix_result <- mtmr_test(x_rate, y_rate, level=0.95, times = 20000, h=2, fixed_reader=FALSE)
-coefs <- mtmr_correlation(x_rate, y_rate)
-AUC <- (mean(not_fix_result[[3]]) + mean(not_fix_result[[4]]))/2
+fix_result <- mtmr_test(x_rate, y_rate, level=0.95, times = 20000, h=2, fixed_reader=TRUE)  #不考虑随机选择医生带来的随机性
+not_fix_result <- mtmr_test(x_rate, y_rate, level=0.95, times = 20000, h=2, fixed_reader=FALSE)   #不考虑随机选择医生带来的随机性
+
+coefs <- mtmr_correlation(x_rate, y_rate)   #估计数据对应的相关系数和正负样本相等的概率
+AUC <- (mean(not_fix_result[[3]]) + mean(not_fix_result[[4]]))/2   #平均AUC估计
 rho_exp <- coefs[1:12]
 equal_p <- coefs[13]
 
-delta <- 0.05
-power <- 0.9
-level <- 0.95
-true_fix_power <- mtmr_power(r, m, n, AUC, delta, level=0.95, rho_exp, equal_p)
+delta <- 0.05   #区分AUC时的差值
+power <- 0.9    #检验功效的要求
+level <- 0.95   #置信度
+true_fix_power <- mtmr_power(r, m, n, AUC, delta, level=0.95, rho_exp, equal_p)   #预计功效
 
-best_plan <- mtmr_samplesize(r, AUC, delta, power, rho_exp, equal_p, ratio='best', level=0.95)
+best_plan <- mtmr_samplesize(r, AUC, delta, power, rho_exp, equal_p, ratio='best', level=0.95)   #fix reader effect对应的正负样本分配方案
+
